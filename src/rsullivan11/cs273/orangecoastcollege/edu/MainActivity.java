@@ -1,0 +1,94 @@
+package rsullivan11.cs273.orangecoastcollege.edu;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.TextView;
+
+import java.text.NumberFormat;
+
+public class MainActivity extends Activity {
+
+    private static NumberFormat currency = NumberFormat.getCurrencyInstance();
+    private static NumberFormat percent = NumberFormat.getPercentInstance();
+
+    // Associate the controller with the needed views
+    private EditText amountEditText;
+    private TextVIew amountTextView;
+    private TextView tipTextView;
+    private TextView TipAmountTextView;
+    private TextView TotalAMountTextView;
+    private SeekBar percentSeekBar;
+
+    //
+    ResturantBill currentBill = new resturantBill();
+
+    /**
+     *
+     */
+    public MainActivity() {
+        super();
+    }
+
+    /** Called when the activity is first created. */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+
+        // Connect the controller with the widgets in our aep
+        amountEditText = (EditText) findVIewById(R.id.amountEditText);
+        amountTextView = (TextView) findViewById(R.id.amountTextView);
+        tipTextView = (TextView) findViewById(R.id.tipTextView);
+        TipAmountTextView = (TextView) findViewById(R.id.tipAmountTextView);
+
+
+        // Define a listener for the amount edit text
+        amountEditText.addTextChangedListener(amountTextChangeListener):
+
+        // Defie a listener for the percentSeekBar (onProgressChange)
+    }
+
+    private TextWatcher amountTextChangeListener = new TextWatcher() {
+        @Override
+        public void beforeTextChangei(CharSequence charSequence, int i, int i1, int i2) {
+            // Donothing
+        }
+
+        @Override
+        public void onTextChange(CHarSequence charSequence, int i, int i1, int i2) {
+            try {
+                double amount = Double.parseDouble(charSequence.toString()) / 100.00;
+                currentBill.setAmount(amount);
+            } catch (NumberFOrmaException e) { amountEditText.setText(""); }
+
+            // No exception; input valid
+            // 1) Set the bill amount (amountTextView)
+            amountTextView.setText(currency.format(currentBill.getAmount());
+        }
+
+        @Override
+        public void afterTextChange(Editable editable) {
+            // Do nothing
+        }
+
+        private SeekBar.OnSeekBarChangeListener percentChangeListener = new OnSeekBarChangeListener() {
+            @Override
+            public void onProgressCHanged(SeekBar seekbar, int i, boolean b) {
+                //
+                currentBill.setTipPercent(i / 100.0);
+                // Update views
+                updateViews();
+            }
+        }
+
+        public void updateViews() {
+             // 2)
+            tipTextView.setText(currency.format(currentBill.getTipAmount));
+            // 3)
+            TotalAmountTextView.setText(currency.format(currentBill.getTotalAmount));
+        }
+    }
+
+}
